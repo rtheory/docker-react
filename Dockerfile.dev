@@ -1,0 +1,21 @@
+FROM node:alpine
+
+WORKDIR '/app'
+
+COPY package.json .
+
+RUN npm install
+
+# Not needed with docker volumes, but could be needed in future if we stop using docker-compose
+COPY . .
+
+CMD ["npm", "run", "start"]
+
+# Instead of 'COPY . .' we're using docker volumes to map folders from container to host
+# docker build -f Dockerfile.dev .
+# docker run -it -p 8888:3000 -v $(pwd):/app <image_id>
+# Problem: we have no node_modules folder on host like container does, so mapping fails
+# add -v /app/node_modules
+# No (:), so no mapping for this folder to something on host
+# docker run -it -p 8888:3000 -v /app/node_modules -v $(pwd):/app <image_id>
+# Or, use docker-compose up
