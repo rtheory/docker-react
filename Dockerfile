@@ -11,5 +11,9 @@ RUN npm run build
 # All other stuff from previous phase is dropped.
 FROM nginx
 
+# This will tell AWS Elastic Beanstalk to open this port.
+EXPOSE 80
+
 COPY --from=builder /app/build /usr/share/nginx/html
+
 # default of nginx is to run the server, so no need for RUN
